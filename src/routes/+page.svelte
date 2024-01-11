@@ -1,29 +1,50 @@
 <script>
+	const PageStates = {
+		landing: 0,
+		login: 1,
+		signup: 2
+	};
+	const PageStateIndexes = Object.fromEntries(
+		Object.entries(PageStates).map(([key, value]) => {
+			return [value, key];
+		})
+	);
+	let pageState = PageStates.landing;
 </script>
 
 <div class="root">
-	<div class="header-container">
-		<h1>Simplify Life</h1>
-		<h2>Maximise Living</h2>
-		<div class="button-container">
-			<button class="login-button">Login</button>
-			<button class="signup-button">Signup</button>
-		</div>
+	<div class="root-container">
+		{#if pageState === PageStates.landing}
+			<div class="header-container">
+				<h1>Simplify Life</h1>
+				<h2>Maximise Living</h2>
+			</div>
+			<div class="button-container">
+				<button class="login-button" on:click={() => (pageState = PageStates.login)}>Login</button>
+				<button class="signup-button" on:click={() => (pageState = PageStates.signup)}
+					>Signup</button
+				>
+			</div>
+		{:else if [PageStates.login, PageStates.signup].includes(pageState)}
+			<h1>{PageStateIndexes[pageState]}</h1>
+			<input placeholder="email" />
+			<input placeholder="password" />
+			<div class="button-container">
+				<button on:click={() => (pageState = PageStates.landing)} class="login-button"
+					>{PageStateIndexes[pageState]}</button
+				>
+				<button on:click={() => (pageState = PageStates.landing)} class="signup-button">back</button
+				>
+			</div>
+		{/if}
 	</div>
 </div>
 
 <style>
-	:global(body) {
-		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-		font-weight: lighter;
-		margin: 0;
-		min-height: 100%;
-	}
-
 	.root {
 		background: rgb(36, 36, 36);
 		background: linear-gradient(135deg, rgba(36, 36, 36, 1) 0%, rgba(6, 6, 6, 1) 100%);
-		text-transform: uppercase;
+		text-transform: lowercase;
 		height: 100vh;
 		color: #d1d1d1;
 		display: flex;
@@ -32,8 +53,14 @@
 		align-items: center;
 	}
 
-	.header-container {
+	.root-container {
+		display: flex;
+		flex-direction: column;
+		text-align: center;
 		width: fit-content;
+	}
+
+	.header-container {
 		text-align-last: justify;
 	}
 
@@ -53,30 +80,6 @@
 
 	.button-container button {
 		margin-top: 0.4em;
-	}
-
-	h1,
-	h2,
-	button {
-		margin: 0;
-	}
-
-	button {
-		text-transform: uppercase;
-		background-color: transparent;
-		border: 1px solid #d1d1d1;
-		color: #d1d1d1;
-		padding: 0.5em 1em;
-		text-decoration: none;
-		display: inline-block;
-		font-size: 1em;
-		width: 100%;
-		text-align: center;
-		font-weight: 900;
-	}
-
-	button:hover {
-		background-color: #d1d1d1;
-		color: rgb(36, 36, 36);
+		text-align-last: center;
 	}
 </style>
