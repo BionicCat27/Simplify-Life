@@ -5,9 +5,15 @@
 	import { onMount } from 'svelte';
 	import { authUser } from '../../stores/auth';
 
+	let displayToken = '';
+
 	onMount(() => {
 		if (!authUser) {
 			goto('/');
+		} else {
+			authUser.subscribe((user) => {
+				displayToken = String(user?.email);
+			});
 		}
 	});
 	function signout() {
@@ -20,6 +26,7 @@
 <div id="root">
 	<div id="dash">
 		<h1>Dashboard</h1>
+		<h2>Welcome {displayToken}</h2>
 		<button on:click={signout}>Sign out</button>
 	</div>
 </div>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { initFirebase } from '$lib/client/firebase';
-	import { signInWithEmailAndPassword } from 'firebase/auth';
+	import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 
 	let email = '';
 	let password = '';
@@ -23,6 +23,14 @@
 		authmsg = '';
 		const { auth } = initFirebase();
 		signInWithEmailAndPassword(auth, email, password).catch((error) => {
+			authmsg = String(error);
+		});
+	}
+
+	function signup() {
+		authmsg = '';
+		const { auth } = initFirebase();
+		createUserWithEmailAndPassword(auth, email, password).catch((error) => {
 			authmsg = String(error);
 		});
 	}
@@ -54,8 +62,10 @@
 					disabled={processingAuth}
 				/>
 				<div class="button-container">
-					<button on:click={signin} class="login-button" disabled={processingAuth}
-						>{PageStateIndexes[pageState]}</button
+					<button
+						on:click={pageState === PageStates.signin ? signin : signup}
+						class="login-button"
+						disabled={processingAuth}>{PageStateIndexes[pageState]}</button
 					>
 					<button on:click={() => (pageState = PageStates.landing)} class="signup-button"
 						>back</button
