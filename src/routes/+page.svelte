@@ -1,7 +1,15 @@
-<script>
+<script lang="ts">
+	import { initFirebase } from '$lib/client/firebase';
+	import { signInWithEmailAndPassword } from 'firebase/auth';
+
+	let email = '';
+	let password = '';
+	let authmsg = '';
+	let processingAuth = false;
+
 	const PageStates = {
 		landing: 0,
-		login: 1,
+		signin: 1,
 		signup: 2
 	};
 	const PageStateIndexes = Object.fromEntries(
@@ -10,6 +18,14 @@
 		})
 	);
 	let pageState = PageStates.landing;
+
+	function signin() {
+		authmsg = '';
+		const { auth } = initFirebase();
+		signInWithEmailAndPassword(auth, email, password).catch((error) => {
+			authmsg = String(error);
+		});
+	}
 </script>
 
 <div class="root">
@@ -20,22 +36,33 @@
 				<h2>Maximise Living</h2>
 			</div>
 			<div class="button-container">
-				<button class="login-button" on:click={() => (pageState = PageStates.login)}>Login</button>
+				<button class="login-button" on:click={() => (pageState = PageStates.signin)}
+					>Sign in</button
+				>
 				<button class="signup-button" on:click={() => (pageState = PageStates.signup)}
 					>Signup</button
 				>
 			</div>
-		{:else if [PageStates.login, PageStates.signup].includes(pageState)}
+		{:else if [PageStates.signin, PageStates.signup].includes(pageState)}
 			<h1>{PageStateIndexes[pageState]}</h1>
-			<input placeholder="email" />
-			<input placeholder="password" />
-			<div class="button-container">
-				<button on:click={() => (pageState = PageStates.landing)} class="login-button"
-					>{PageStateIndexes[pageState]}</button
-				>
-				<button on:click={() => (pageState = PageStates.landing)} class="signup-button">back</button
-				>
-			</div>
+			<form>
+				<input placeholder="email" type="email" bind:value={email} disabled={processingAuth} />
+				<input
+					placeholder="password"
+					type="password"
+					bind:value={password}
+					disabled={processingAuth}
+				/>
+				<div class="button-container">
+					<button on:click={signin} class="login-button" disabled={processingAuth}
+						>{PageStateIndexes[pageState]}</button
+					>
+					<button on:click={() => (pageState = PageStates.landing)} class="signup-button"
+						>back</button
+					>
+				</div>
+			</form>
+			<p>{authmsg}</p>
 		{/if}
 	</div>
 </div>
