@@ -15,8 +15,11 @@
 		"test:unit": "vitest"
 	},
 	"devDependencies": {
+		"@capacitor/android": "^5.6.0",
+		"@capacitor/cli": "^5.6.0",
+		"@capacitor/core": "^5.6.0",
 		"@playwright/test": "^1.28.1",
-		"@sveltejs/adapter-auto": "^3.0.0",
+		"@sveltejs/adapter-static": "^3.0.1",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@types/eslint": "8.56.0",
