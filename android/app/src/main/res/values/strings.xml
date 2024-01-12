@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">simplify-life</string>
+    <string name="title_activity_main">simplify-life</string>
+    <string name="package_name">earth.aslanbb.simplifylife</string>
+    <string name="custom_url_scheme">earth.aslanbb.simplifylife</string>
+</resources>
