@@ -45,7 +45,7 @@
 	}
 
 	div#dash {
-		border-radius: 16px;
+		border-radius: 8px;
 		box-shadow:
 			5px 5px 10px #020202,
 			-5px -5px 10px #0a0a0a;
