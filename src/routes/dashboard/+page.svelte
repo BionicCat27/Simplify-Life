@@ -8,13 +8,13 @@
 	let displayToken = '';
 
 	onMount(() => {
-		if (!authUser) {
-			goto('/');
-		} else {
-			authUser.subscribe((user) => {
+		authUser.subscribe((user) => {
+			if (!user) {
+				goto('/');
+			} else {
 				displayToken = String(user?.email);
-			});
-		}
+			}
+		});
 	});
 	function signout() {
 		const { auth } = initFirebase();
